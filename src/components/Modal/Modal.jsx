@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalStyle, Overlay } from './Modal.styled';
@@ -18,10 +19,21 @@ export default function Modal({ children, onClose }) {
     };
   }, [onClose]);
 
+  const handleBackdropClick = e => {
+    if (e.target.tagName !== 'IMG') {
+      onClose();
+    }
+  };
+
   return createPortal(
-    <Overlay>
+    <Overlay onClick={handleBackdropClick}>
       <ModalStyle>{children}</ModalStyle>
     </Overlay>,
     modalRoot
   );
 }
+
+Modal.propTypes = {
+  children: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
+};
